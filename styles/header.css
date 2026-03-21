@@ -219,6 +219,10 @@
   display: none;
 }
 
+.site-nav__toggle {
+  touch-action: manipulation;
+}
+
 @media (max-width: 980px) {
   .site-header {
     min-height: 5.5rem;

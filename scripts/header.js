@@ -7,45 +7,44 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastScrollY = window.scrollY;
 
   if (menuButton && siteHeader) {
-    menuButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
+    ["click", "touchend"].forEach((eventType) => {
+      menuButton.addEventListener(eventType, (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
-      const isOpen = siteHeader.classList.toggle("is-menu-open");
+        const isOpen = siteHeader.classList.toggle("is-menu-open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+        menuButton.setAttribute(
+          "aria-label",
+          isOpen ? "Close navigation menu" : "Open navigation menu"
+        );
 
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-      menuButton.setAttribute(
-        "aria-label",
-        isOpen ? "Close navigation menu" : "Open navigation menu"
-      );
-
-      if (isOpen) {
-        siteHeader.classList.remove("site-header--hidden");
-      }
+        if (isOpen) {
+          siteHeader.classList.remove("site-header--hidden");
+        }
+      });
     });
   }
 
   dropdownItems.forEach((item) => {
     const toggle = item.querySelector(".site-nav__toggle");
-
     if (!toggle) return;
 
-    toggle.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
+    ["click", "touchend"].forEach((eventType) => {
+      toggle.addEventListener(eventType, (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
-      const isOpen = item.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
+        const isOpen = item.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", String(isOpen));
 
-      dropdownItems.forEach((otherItem) => {
-        if (otherItem !== item) {
-          otherItem.classList.remove("is-open");
-
-          const otherToggle = otherItem.querySelector(".site-nav__toggle");
-          if (otherToggle) {
-            otherToggle.setAttribute("aria-expanded", "false");
+        dropdownItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.classList.remove("is-open");
+            const otherToggle = otherItem.querySelector(".site-nav__toggle");
+            if (otherToggle) otherToggle.setAttribute("aria-expanded", "false");
           }
-        }
+        });
       });
     });
   });
