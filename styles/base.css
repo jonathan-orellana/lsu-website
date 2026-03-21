@@ -6,7 +6,7 @@
   --color-text-inverse: #ffffff;
   --color-border: rgba(255, 255, 255, 0.2);
 
-  --font-family-base: 'Poppins', sans-serif;
+  --font-family-base: "Poppins", sans-serif;
 
   --header-padding-inline: clamp(1rem, 4vw, 3rem);
   --header-height: 7rem;
@@ -36,6 +36,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body,
 h1,
 h2,
@@ -61,6 +67,7 @@ body {
   color: var(--color-text);
   background-color: var(--color-surface);
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 img,
@@ -90,4 +97,29 @@ select {
 
 main {
   padding-top: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
