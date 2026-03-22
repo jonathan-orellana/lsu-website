@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".site-nav a, .dropdown-menu__link");
 
   let lastScrollY = window.scrollY;
+  // Track when the menu was last opened to ignore the immediate synthetic click
+  // that touchscreens fire right after a touch event
+  let menuOpenedAt = 0;
 
   function closeAllDropdowns() {
     dropdownItems.forEach((item) => {
@@ -41,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (isOpen) {
+        // Record the time the menu opened so the outside-click handler
+        // can ignore the synthetic click touchscreens fire immediately after
+        menuOpenedAt = Date.now();
         siteHeader.classList.remove("site-header--hidden");
       } else {
         closeAllDropdowns();
@@ -73,6 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (event) => {
+    // Ignore clicks that happen within 300ms of the menu opening —
+    // on touch devices a touchstart → synthetic click fires almost instantly
+    // and would close the menu before the user ever sees it
+    if (Date.now() - menuOpenedAt < 300) return;
+
     if (!event.target.closest(".site-header")) {
       closeMenu();
     }

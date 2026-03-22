@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Disable smooth scroll during page load to prevent the unwanted scroll drift
+  document.documentElement.style.scrollBehavior = "auto";
+  window.addEventListener("load", () => {
+    // Re-enable smooth scroll after everything has settled
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = "";
+      });
+    });
+  });
+
   const hero = document.querySelector(".hero");
 
   if (hero) {
