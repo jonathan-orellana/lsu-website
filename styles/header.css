@@ -307,12 +307,18 @@
     overflow: hidden;
     background: var(--color-primary);
     border-bottom: 1px solid var(--color-border);
-    transition: max-height 0.4s ease;
+    transition: max-height 0.35s ease, opacity 0.25s ease, visibility 0.25s ease;
     z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .site-header.is-menu-open .site-nav {
     max-height: 85vh;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .site-nav__list {
@@ -380,5 +386,15 @@
 
   .site-nav__item--mobile-cta .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .section-wrapper {
+    margin-top: -2rem;
+  }
+
+  .feature-highlight__second {
+    margin-bottom: -1rem;
   }
 }
