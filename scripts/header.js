@@ -4,15 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const dropdownItems = document.querySelectorAll(".site-nav__item--dropdown");
   const navLinks = document.querySelectorAll(".site-nav a, .dropdown-menu__link");
 
+  if (!siteHeader || !menuButton) return;
+
   let lastScrollY = window.scrollY;
-  // Track when the menu was last opened to ignore the immediate synthetic click
-  // that touchscreens fire right after a touch event
-  let menuOpenedAt = 0;
 
   function closeAllDropdowns() {
     dropdownItems.forEach((item) => {
       item.classList.remove("is-open");
-
       const toggle = item.querySelector(".site-nav__toggle");
       if (toggle) {
         toggle.setAttribute("aria-expanded", "false");
@@ -20,73 +18,68 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function closeMenu() {
-    if (!siteHeader || !menuButton) return;
+  function syncMenuState(isOpen) {
+    siteHeader.classList.toggle("is-menu-open", isOpen);
+    siteHeader.classList.remove("site-header--hidden");
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute(
+      "aria-label",
+      isOpen ? "Close navigation menu" : "Open navigation menu"
+    );
+    document.body.classList.toggle("menu-open", isOpen && window.innerWidth <= 980);
 
-    siteHeader.classList.remove("is-menu-open");
-    menuButton.setAttribute("aria-expanded", "false");
-    menuButton.setAttribute("aria-label", "Open navigation menu");
-
-    closeAllDropdowns();
+    if (!isOpen) {
+      closeAllDropdowns();
+    }
   }
 
-  if (menuButton && siteHeader) {
-    menuButton.addEventListener("click", (event) => {
+  function toggleMenu(event) {
+    if (event) {
       event.preventDefault();
       event.stopPropagation();
+    }
 
-      const isOpen = siteHeader.classList.toggle("is-menu-open");
-
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-      menuButton.setAttribute(
-        "aria-label",
-        isOpen ? "Close navigation menu" : "Open navigation menu"
-      );
-
-      if (isOpen) {
-        // Record the time the menu opened so the outside-click handler
-        // can ignore the synthetic click touchscreens fire immediately after
-        menuOpenedAt = Date.now();
-        siteHeader.classList.remove("site-header--hidden");
-      } else {
-        closeAllDropdowns();
-      }
-    });
+    const isOpen = !siteHeader.classList.contains("is-menu-open");
+    syncMenuState(isOpen);
   }
+
+  function closeMenu() {
+    syncMenuState(false);
+  }
+
+  menuButton.addEventListener("click", toggleMenu);
+  menuButton.addEventListener("touchend", toggleMenu, { passive: false });
 
   dropdownItems.forEach((item) => {
     const toggle = item.querySelector(".site-nav__toggle");
     if (!toggle) return;
 
-    toggle.addEventListener("click", (event) => {
+    const toggleDropdown = (event) => {
       event.preventDefault();
       event.stopPropagation();
 
-      const isOpen = item.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
+      const willOpen = !item.classList.contains("is-open");
 
       dropdownItems.forEach((otherItem) => {
-        if (otherItem !== item) {
-          otherItem.classList.remove("is-open");
-
-          const otherToggle = otherItem.querySelector(".site-nav__toggle");
-          if (otherToggle) {
-            otherToggle.setAttribute("aria-expanded", "false");
-          }
+        const otherToggle = otherItem.querySelector(".site-nav__toggle");
+        otherItem.classList.remove("is-open");
+        if (otherToggle) {
+          otherToggle.setAttribute("aria-expanded", "false");
         }
       });
-    });
+
+      item.classList.toggle("is-open", willOpen);
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    };
+
+    toggle.addEventListener("click", toggleDropdown);
+    toggle.addEventListener("touchend", toggleDropdown, { passive: false });
   });
 
-  document.addEventListener("click", (event) => {
-    // Ignore clicks that happen within 300ms of the menu opening —
-    // on touch devices a touchstart → synthetic click fires almost instantly
-    // and would close the menu before the user ever sees it
-    if (Date.now() - menuOpenedAt < 300) return;
-
-    if (!event.target.closest(".site-header")) {
-      closeMenu();
-    }
+  document.addEventListener("pointerdown", (event) => {
+    if (!siteHeader.classList.contains("is-menu-open")) return;
+    if (event.target.closest(".site-header")) return;
+    closeMenu();
   });
 
   navLinks.forEach((link) => {
@@ -99,9 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  window.addEventListener("scroll", () => {
-    if (!siteHeader) return;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 980) {
+      document.body.classList.remove("menu-open");
+      siteHeader.classList.remove("is-menu-open");
+      closeAllDropdowns();
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Open navigation menu");
+      siteHeader.classList.remove("site-header--hidden");
+    }
+  });
 
+  window.addEventListener("scroll", () => {
     const currentScrollY = window.scrollY;
 
     if (currentScrollY <= 10) {
@@ -123,5 +125,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     lastScrollY = currentScrollY;
-  });
+  }, { passive: true });
 });

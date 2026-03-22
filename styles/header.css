@@ -13,7 +13,6 @@
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
 }
 
 .site-header--hidden {
@@ -260,7 +259,7 @@
     margin: 0;
     position: relative;
     z-index: 1;
-    pointer-events: none;
+    min-width: 0;
   }
 
   .site-logo {
@@ -269,7 +268,6 @@
     justify-content: center;
     margin: 0 auto;
     padding: 0;
-    pointer-events: auto;
   }
 
   .site-logo__image {
@@ -298,34 +296,38 @@
   }
 
   .site-nav {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 5.5rem;
     left: 0;
     right: 0;
+    bottom: 0;
     display: block;
-    max-height: 0;
-    overflow: hidden;
-    background: var(--color-primary);
-    border-bottom: 1px solid var(--color-border);
-    transition: max-height 0.35s ease, opacity 0.25s ease, visibility 0.25s ease;
-    z-index: 10;
+    background: rgba(23, 39, 52, 0.98);
+    border-top: 1px solid var(--color-border);
+    padding: 0;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    transform: translateY(-0.75rem);
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .site-header.is-menu-open .site-nav {
-    max-height: 85vh;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transform: translateY(0);
   }
 
   .site-nav__list {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 1rem 1rem 1.5rem;
+    padding: 1rem 1rem calc(2rem + env(safe-area-inset-bottom));
+    min-height: 100%;
+    flex-wrap: nowrap;
   }
 
   .site-nav__item {
@@ -363,7 +365,7 @@
     transform: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.3s ease, margin 0.3s ease;
   }
 
   .dropdown-menu::before {

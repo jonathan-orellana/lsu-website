@@ -1,15 +1,17 @@
 .hero {
   position: relative;
+  min-height: 100svh;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8rem 2rem 4rem;
+  width: 100%;
   background-image: url("../assets/images/hero-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow: clip;
   touch-action: pan-y;
   border-bottom-left-radius: 3.125rem;
   border-bottom-right-radius: 3.125rem;
@@ -149,6 +151,7 @@
 .section-wrapper {
   padding: 0 8rem 6rem;
   padding-top: 12rem;
+  width: 100%;
   background: #172734;
   border-bottom-right-radius: 50px;
   border-bottom-left-radius: 50px;
@@ -272,6 +275,7 @@
   min-height: auto;
   background-color: #E6E4E8;
   padding: 12rem 8rem;
+  width: 100%;
 }
 
 .pillars-section__title {
@@ -411,6 +415,7 @@
 .feature-highlight {
   background-color: #0f2434;
   padding: 4rem 2rem;
+  width: 100%;
 }
 
 .feature-highlight__inner {
@@ -492,6 +497,7 @@
 .events-section {
   margin: 4rem 0;
   padding: 8rem 4rem;
+  width: 100%;
   background-color: var(--color-surface);
 }
 
@@ -655,6 +661,7 @@
 .site-footer {
   background-color: #6aa5d8;
   padding: 10rem 3rem 4rem;
+  width: 100%;
   color: #ffffff;
   opacity: 0;
   transform: translateY(120px);
@@ -1022,5 +1029,38 @@
   .site-footer__nav {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+}
+
+.hero,
+.section-wrapper,
+.mission-section,
+.mission-section__content,
+.mission-section__media,
+.pillars-section,
+.feature-highlight,
+.events-section,
+.feature-highlight__second,
+.site-footer {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.events-section__container,
+.pillars-section__container,
+.feature-highlight__inner,
+.site-footer__container {
+  min-width: 0;
+}
+
+@media (max-width: 980px) {
+
+  .hero,
+  .section-wrapper,
+  .pillars-section,
+  .feature-highlight,
+  .events-section,
+  .site-footer {
+    overflow: visible;
   }
 }
