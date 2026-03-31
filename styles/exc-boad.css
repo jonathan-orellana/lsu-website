@@ -1,0 +1,260 @@
+main {
+  display: block;
+}
+
+.exec-hero {
+  position: relative;
+  min-height: 22rem;
+  padding: 0rem 1.5rem;
+  padding-top: 12rem;
+  border-bottom-left-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  overflow: hidden;
+  background-image: url("/assets/images/hero-bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.exec-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(104, 169, 220, 0.8);
+}
+
+.exec-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 62rem;
+  margin: 0 auto;
+  text-align: center;
+  color: #E6E4E8;
+}
+
+.exec-hero__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.exec-hero__content h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.exec-hero__text {
+  max-width: 40rem;
+  margin: 1rem auto 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.exec-board {
+  padding: 5rem 1.5rem 6rem;
+  background: #f3f1f4;
+}
+
+.exec-board__inner {
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+.exec-board__header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.exec-board__header h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  color: #111111;
+}
+
+.exec-board__header p {
+  max-width: 42rem;
+  margin: 0 auto;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.exec-board__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(16rem, 1fr));
+  gap: 2.5rem 2rem;
+  align-items: start;
+}
+
+.exec-card {
+  text-align: center;
+}
+
+.exec-card__image {
+  display: block;
+  width: min(16rem, 100%);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 1.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.exec-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.exec-card__role {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #68a9dc;
+}
+
+.exec-card__name {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111111;
+}
+
+.exec-card__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.exec-card__link {
+  color: #111111;
+  text-decoration: none;
+  word-break: break-word;
+  font-size: 0.85rem;
+}
+
+.exec-card__link:hover,
+.exec-card__link:focus-visible {
+  text-decoration: underline;
+}
+
+.exec-hero__content,
+.exec-card {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.exec-card:nth-child(odd) {
+  transform: translateX(-2rem);
+}
+
+.exec-card:nth-child(even) {
+  transform: translateX(2rem);
+}
+
+.exec-hero__content.is-visible,
+.exec-card.is-visible {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+@media (max-width: 768px) {
+  .exec-hero {
+    min-height: 18rem;
+    padding: 8rem 1.25rem 2rem;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    background-position: center;
+  }
+
+  .exec-hero__content {
+    max-width: 100%;
+  }
+
+  .exec-hero__eyebrow {
+    color: white;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .exec-hero__content h1 {
+    font-size: 1.85rem;
+    line-height: 1.15;
+  }
+
+  .exec-hero__text {
+    margin-top: 0.85rem;
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+
+  .exec-board {
+    padding: 3.5rem 1.25rem 4.5rem;
+  }
+
+  .exec-board__header {
+    margin-bottom: 2.25rem;
+  }
+
+  .exec-board__header h2 {
+    font-size: 1.7rem;
+  }
+
+  .exec-board__header p {
+    font-size: 0.98rem;
+  }
+
+  .exec-board__grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  .exec-card {
+    width: 100%;
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+
+  .exec-card__image {
+    width: min(14rem, 78vw);
+    margin-bottom: 1.1rem;
+  }
+
+  .exec-card__body {
+    gap: 0.3rem;
+  }
+
+  .exec-card__role {
+    font-size: 1.1rem;
+  }
+
+  .exec-card__name,
+  .exec-card__meta,
+  .exec-card__link {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .exec-hero__content,
+  .exec-card {
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .exec-hero__content {
+    transform: translateY(1.25rem);
+  }
+
+  .exec-card:nth-child(odd),
+  .exec-card:nth-child(even) {
+    transform: translateY(1.25rem);
+  }
+
+  .exec-hero__content.is-visible,
+  .exec-card.is-visible {
+    transform: translateY(0);
+  }
+}

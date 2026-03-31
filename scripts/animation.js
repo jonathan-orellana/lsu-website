@@ -44,3 +44,34 @@ document.addEventListener("DOMContentLoaded", () => {
   makeObserver(".feature-highlight__second", "feature-highlight__second--visible");
   makeObserver(".site-footer", "is-visible");
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const animatedItems = document.querySelectorAll(
+    ".exec-hero__content, .exec-card"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry, index) => {
+        if (!entry.isIntersecting) return;
+
+        const element = entry.target;
+        const delay = element.classList.contains("exec-card") ? index * 120 : 0;
+
+        setTimeout(() => {
+          element.classList.add("is-visible");
+        }, delay);
+
+        obs.unobserve(element);
+      });
+    },
+    {
+      threshold: 0.18,
+      rootMargin: "0px 0px -40px 0px"
+    }
+  );
+
+  animatedItems.forEach((item) => {
+    observer.observe(item);
+  });
+});
